@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.API/ControlAccesoEventos.API.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Application/ControlAccesoEventos.Application.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Domain/ControlAccesoEventos.Domain.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Infrastructure/ControlAccesoEventos.Infrastructure.csproj" />
+</Solution>
