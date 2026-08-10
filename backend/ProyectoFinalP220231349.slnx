@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ControlAccesoEventos.API/ControlAccesoEventos.API.csproj" />
+  <Project Path="ControlAccesoEventos.Application/ControlAccesoEventos.Application.csproj" />
+  <Project Path="ControlAccesoEventos.Domain/ControlAccesoEventos.Domain.csproj" />
+  <Project Path="ControlAccesoEventos.Infrastructure/ControlAccesoEventos.Infrastructure.csproj" />
+</Solution>
