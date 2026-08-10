@@ -1,0 +1,89 @@
+@page "/eventos"
+@inject ControlAccesEvents.Blazor.Services.EventoService EventoService
+
+<h3>Eventos</h3>
+
+@if (!string.IsNullOrEmpty(EventoService.LastError))
+{
+	<div class="alert alert-danger">@EventoService.LastError</div>
+}
+
+<EditForm Model="newEvento" OnValidSubmit="Create">
+	<div class="row g-2">
+		<div class="col-md-4">
+			<InputText class="form-control" @bind-Value="newEvento.Nombre" placeholder="Nombre" />
+		</div>
+		<div class="col-md-3">
+			<InputText class="form-control" @bind-Value="newEvento.Fecha" placeholder="Fecha" />
+		</div>
+		<div class="col-md-3">
+			<InputText class="form-control" @bind-Value="newEvento.Lugar" placeholder="Lugar" />
+		</div>
+		<div class="col-md-2">
+			<button class="btn btn-primary">Crear</button>
+		</div>
+	</div>
+</EditForm>
+
+<table class="table mt-3">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nombre</th>
+			<th>Fecha</th>
+			<th>Lugar</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (eventos is null)
+		{
+			<tr><td colspan="5">Cargando...</td></tr>
+		}
+		else if (eventos.Count == 0)
+		{
+			<tr><td colspan="5">No hay eventos.</td></tr>
+		}
+		else
+		{
+			@foreach (var e in eventos)
+			{
+				<tr>
+					<td>@e.Id</td>
+					<td>@e.Nombre</td>
+					<td>@e.Fecha</td>
+					<td>@e.Lugar</td>
+					<td>
+						<button class="btn btn-sm btn-danger" @onclick="() => Delete(e.Id)">Eliminar</button>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+@code {
+	private List<ControlAccesEvents.Blazor.DTOs.EventoDto>? eventos;
+	private ControlAccesEvents.Blazor.DTOs.EventoDto newEvento = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		eventos = await EventoService.GetAllAsync();
+	}
+
+	private async Task Create()
+	{
+		var ok = await EventoService.CreateAsync(newEvento);
+		if (ok)
+		{
+			newEvento = new();
+			eventos = await EventoService.GetAllAsync();
+		}
+	}
+
+	private async Task Delete(int id)
+	{
+		await EventoService.DeleteAsync(id);
+		eventos = await EventoService.GetAllAsync();
+	}
+}

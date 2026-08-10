@@ -1,0 +1,68 @@
+@page "/eventos/editar/{Id:int}"
+@inject ControlAccesoEventos.Blazor.Services.EventoService EventoService
+@inject NavigationManager NavigationManager
+
+<h3>Editar Evento</h3>
+
+@if (evento == null)
+{
+	<p>Cargando...</p>
+}
+else
+{
+	<EditForm Model="evento" OnValidSubmit="HandleValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div class="mb-3">
+			<label class="form-label">Nombre</label>
+			<InputText class="form-control" @bind-Value="evento.Nombre" />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Fecha</label>
+			<InputDate class="form-control" @bind-Value="evento.Fecha" />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Lugar</label>
+			<InputText class="form-control" @bind-Value="evento.Lugar" />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Capacidad</label>
+			<InputNumber class="form-control" @bind-Value="evento.Capacidad" />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Descripcion</label>
+			<InputTextArea class="form-control" @bind-Value="evento.Descripcion" />
+		</div>
+
+		<button class="btn btn-primary" type="submit">Guardar</button>
+		<button class="btn btn-secondary ms-2" type="button" @onclick="Cancel">Cancelar</button>
+	</EditForm>
+}
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private ControlAccesoEventos.Blazor.DTOs.EventoDto evento;
+
+	protected override async Task OnInitializedAsync()
+	{
+		evento = await EventoService.GetByIdAsync(Id);
+	}
+
+	private async Task HandleValidSubmit()
+	{
+		var resp = await EventoService.UpdateAsync(Id, evento);
+		if (resp.IsSuccessStatusCode)
+		{
+			NavigationManager.NavigateTo("/eventos");
+		}
+	}
+
+	private void Cancel() => NavigationManager.NavigateTo("/eventos");
+}

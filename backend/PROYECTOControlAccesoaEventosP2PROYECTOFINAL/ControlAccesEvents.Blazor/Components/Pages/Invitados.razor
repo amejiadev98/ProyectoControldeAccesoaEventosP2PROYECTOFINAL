@@ -1,0 +1,89 @@
+@page "/invitados"
+@inject ControlAccesEvents.Blazor.Services.InvitadoService InvitadoService
+
+<h3>Invitados</h3>
+
+@if (!string.IsNullOrEmpty(InvitadoService.LastError))
+{
+	<div class="alert alert-danger">@InvitadoService.LastError</div>
+}
+
+<EditForm Model="newInvitado" OnValidSubmit="Create">
+	<div class="row g-2">
+		<div class="col-md-4">
+			<InputText class="form-control" @bind-Value="newInvitado.Nombre" placeholder="Nombre" />
+		</div>
+		<div class="col-md-4">
+			<InputText class="form-control" @bind-Value="newInvitado.Email" placeholder="Email" />
+		</div>
+		<div class="col-md-3">
+			<InputText class="form-control" @bind-Value="newInvitado.Telefono" placeholder="Telefono" />
+		</div>
+		<div class="col-md-1">
+			<button class="btn btn-primary">Crear</button>
+		</div>
+	</div>
+</EditForm>
+
+<table class="table mt-3">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Nombre</th>
+			<th>Email</th>
+			<th>Telefono</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (invitados is null)
+		{
+			<tr><td colspan="5">Cargando...</td></tr>
+		}
+		else if (invitados.Count == 0)
+		{
+			<tr><td colspan="5">No hay invitados.</td></tr>
+		}
+		else
+		{
+			@foreach (var i in invitados)
+			{
+				<tr>
+					<td>@i.Id</td>
+					<td>@i.Nombre</td>
+					<td>@i.Email</td>
+					<td>@i.Telefono</td>
+					<td>
+						<button class="btn btn-sm btn-danger" @onclick="() => Delete(i.Id)">Eliminar</button>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+@code {
+	private List<ControlAccesEvents.Blazor.DTOs.InvitadoDto>? invitados;
+	private ControlAccesEvents.Blazor.DTOs.InvitadoDto newInvitado = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		invitados = await InvitadoService.GetAllAsync();
+	}
+
+	private async Task Create()
+	{
+		var ok = await InvitadoService.CreateAsync(newInvitado);
+		if (ok)
+		{
+			newInvitado = new();
+			invitados = await InvitadoService.GetAllAsync();
+		}
+	}
+
+	private async Task Delete(int id)
+	{
+		await InvitadoService.DeleteAsync(id);
+		invitados = await InvitadoService.GetAllAsync();
+	}
+}

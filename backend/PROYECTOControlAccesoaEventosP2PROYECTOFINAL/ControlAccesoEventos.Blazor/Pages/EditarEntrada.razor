@@ -1,0 +1,76 @@
+@page "/entradas/editar/{Id:int}"
+@inject ControlAccesoEventos.Blazor.Services.EntradaService EntradaService
+@inject EventoService EventoService
+@inject InvitadoService InvitadoService
+@inject NavigationManager NavigationManager
+
+<h3>Editar Entrada</h3>
+
+@if (entrada == null)
+{
+	<p>Cargando...</p>
+}
+else
+{
+	<EditForm Model="entrada" OnValidSubmit="HandleValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<div class="mb-3">
+			<label class="form-label">Codigo Acceso</label>
+			<InputText class="form-control" @bind-Value="entrada.CodigoAcceso" />
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Evento</label>
+			<InputSelect class="form-select" @bind-Value="entrada.EventoId">
+				<option value="">-- Seleccione --</option>
+				@foreach (var e in eventos)
+				{
+					<option value="@e.Id">@e.Nombre</option>
+				}
+			</InputSelect>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label">Invitado</label>
+			<InputSelect class="form-select" @bind-Value="entrada.InvitadoId">
+				<option value="">-- Seleccione --</option>
+				@foreach (var i in invitados)
+				{
+					<option value="@i.Id">@i.Nombre @i.Apellidos</option>
+				}
+			</InputSelect>
+		</div>
+
+		<button class="btn btn-primary" type="submit">Guardar</button>
+		<button class="btn btn-secondary ms-2" type="button" @onclick="Cancel">Cancelar</button>
+	</EditForm>
+}
+
+@code {
+	[Parameter]
+	public int Id { get; set; }
+
+	private ControlAccesoEventos.Blazor.DTOs.EntradaDto entrada;
+	private List<ControlAccesoEventos.Blazor.DTOs.EventoDto> eventos = new();
+	private List<ControlAccesoEventos.Blazor.DTOs.InvitadoDto> invitados = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		eventos = await EventoService.GetAllAsync();
+		invitados = await InvitadoService.GetAllAsync();
+		entrada = await EntradaService.GetByIdAsync(Id);
+	}
+
+	private async Task HandleValidSubmit()
+	{
+		var resp = await EntradaService.UpdateAsync(Id, entrada);
+		if (resp.IsSuccessStatusCode)
+		{
+			NavigationManager.NavigateTo("/entradas");
+		}
+	}
+
+	private void Cancel() => NavigationManager.NavigateTo("/entradas");
+}

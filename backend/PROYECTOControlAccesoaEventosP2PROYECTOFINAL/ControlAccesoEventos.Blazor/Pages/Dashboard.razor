@@ -1,0 +1,62 @@
+@page "/"
+@inject ControlAccesoEventos.Blazor.Services.EventoService EventoService
+@inject ControlAccesoEventos.Blazor.Services.InvitadoService InvitadoService
+@inject ControlAccesoEventos.Blazor.Services.EntradaService EntradaService
+@inject ControlAccesoEventos.Blazor.Services.ValidacionService ValidacionService
+
+<h3>Dashboard</h3>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Eventos</h5>
+                <p class="card-text">@_totalEventos</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Invitados</h5>
+                <p class="card-text">@_totalInvitados</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Entradas</h5>
+                <p class="card-text">@_totalEntradas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Validaciones</h5>
+                <p class="card-text">@_totalValidaciones</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int _totalEventos;
+    private int _totalInvitados;
+    private int _totalEntradas;
+    private int _totalValidaciones;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var eventos = await EventoService.GetAllAsync();
+        var invitados = await InvitadoService.GetAllAsync();
+        var entradas = await EntradaService.GetAllAsync();
+        var validaciones = await ValidacionService.GetAllAsync();
+
+        _totalEventos = eventos?.Count ?? 0;
+        _totalInvitados = invitados?.Count ?? 0;
+        _totalEntradas = entradas?.Count ?? 0;
+        _totalValidaciones = validaciones?.Count ?? 0;
+    }
+}

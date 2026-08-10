@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.API/ControlAccesoEventos.API.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Application/ControlAccesoEventos.Application.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Domain/ControlAccesoEventos.Domain.csproj" />
+  <Project Path="../../../../Users/amejia1/source/repos/ProyectoFinalP220231349/ControlAccesoEventos.Infrastructure/ControlAccesoEventos.Infrastructure.csproj" />
+  <Project Path="ControlAccesEvents.Blazor/ControlAccesEvents.Blazor.csproj" Id="4b2c91f3-d85a-4943-8568-f3e5387ed9b2" />
+</Solution>

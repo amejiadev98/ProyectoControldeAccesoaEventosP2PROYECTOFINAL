@@ -1,0 +1,82 @@
+@page "/"
+@inject ControlAccesEvents.Blazor.Services.EventoService EventoService
+@inject ControlAccesEvents.Blazor.Services.InvitadoService InvitadoService
+@inject ControlAccesEvents.Blazor.Services.EntradaService EntradaService
+@inject ControlAccesEvents.Blazor.Services.ValidacionService ValidacionService
+
+<h3>Dashboard</h3>
+
+@if (errorMessage is not null)
+{
+	<div class="alert alert-danger">@errorMessage</div>
+}
+else
+{
+	<div class="row">
+		<div class="col-md-3">
+			<div class="card text-white bg-primary mb-3">
+				<div class="card-body">
+					<h5 class="card-title">Eventos</h5>
+					<p class="card-text">@eventosCount</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card text-white bg-success mb-3">
+				<div class="card-body">
+					<h5 class="card-title">Invitados</h5>
+					<p class="card-text">@invitadosCount</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card text-white bg-warning mb-3">
+				<div class="card-body">
+					<h5 class="card-title">Entradas</h5>
+					<p class="card-text">@entradasCount</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="card text-white bg-danger mb-3">
+				<div class="card-body">
+					<h5 class="card-title">Validaciones</h5>
+					<p class="card-text">@validacionesCount</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+@code {
+	private int eventosCount;
+	private int invitadosCount;
+	private int entradasCount;
+	private int validacionesCount;
+	private string? errorMessage;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var ev = await EventoService.GetAllAsync();
+			var inb = await InvitadoService.GetAllAsync();
+			var en = await EntradaService.GetAllAsync();
+			var va = await ValidacionService.GetAllAsync();
+
+			if (EventoService.LastError is not null) { errorMessage = EventoService.LastError; return; }
+			if (InvitadoService.LastError is not null) { errorMessage = InvitadoService.LastError; return; }
+			if (EntradaService.LastError is not null) { errorMessage = EntradaService.LastError; return; }
+			if (ValidacionService.LastError is not null) { errorMessage = ValidacionService.LastError; return; }
+
+			eventosCount = ev?.Count ?? 0;
+			invitadosCount = inb?.Count ?? 0;
+			entradasCount = en?.Count ?? 0;
+			validacionesCount = va?.Count ?? 0;
+		}
+		catch
+		{
+			errorMessage = "No se pudo conectar con la API. Verifique que el backend esté ejecutándose.";
+		}
+	}
+}

@@ -1,0 +1,61 @@
+@page "/entradas"
+@inject ControlAccesoEventos.Blazor.Services.EntradaService EntradaService
+
+<h3>Entradas</h3>
+
+<button class="btn btn-primary mb-3" @onclick="CreateNew">Crear Entrada</button>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Codigo</th>
+			<th>EventoId</th>
+			<th>InvitadoId</th>
+			<th>Fecha Emision</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (_entradas != null)
+		{
+			@foreach (var e in _entradas)
+			{
+				<tr>
+					<td>@e.Id</td>
+					<td>@e.CodigoAcceso</td>
+					<td>@e.EventoId</td>
+					<td>@e.InvitadoId</td>
+					<td>@e.FechaEmision.ToString("g")</td>
+					<td>
+						<button class="btn btn-sm btn-secondary" @onclick="() => Edit(e.Id)">Editar</button>
+						<button class="btn btn-sm btn-danger" @onclick="() => Delete(e.Id)">Eliminar</button>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+@code {
+	private List<ControlAccesoEventos.Blazor.DTOs.EntradaDto> _entradas;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_entradas = await EntradaService.GetAllAsync();
+	}
+
+	private void CreateNew() => NavigationManager.NavigateTo("/entradas/crear");
+
+	[Inject]
+	protected NavigationManager NavigationManager { get; set; }
+
+	private void Edit(int id) => NavigationManager.NavigateTo($"/entradas/editar/{id}");
+
+	private async Task Delete(int id)
+	{
+		await EntradaService.DeleteAsync(id);
+		_entradas = await EntradaService.GetAllAsync();
+		StateHasChanged();
+	}
+}

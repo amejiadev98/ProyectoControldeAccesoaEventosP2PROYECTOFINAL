@@ -1,0 +1,89 @@
+@page "/validaciones"
+@inject ControlAccesEvents.Blazor.Services.ValidacionService ValidacionService
+
+<h3>Validaciones</h3>
+
+@if (!string.IsNullOrEmpty(ValidacionService.LastError))
+{
+	<div class="alert alert-danger">@ValidacionService.LastError</div>
+}
+
+<EditForm Model="newValidacion" OnValidSubmit="Create">
+	<div class="row g-2">
+		<div class="col-md-4">
+			<InputText class="form-control" @bind-Value="newValidacion.EntradaCodigo" placeholder="EntradaCodigo" />
+		</div>
+		<div class="col-md-4">
+			<InputText class="form-control" @bind-Value="newValidacion.FechaHora" placeholder="FechaHora" />
+		</div>
+		<div class="col-md-3">
+			<InputText class="form-control" @bind-Value="newValidacion.Estado" placeholder="Estado" />
+		</div>
+		<div class="col-md-1">
+			<button class="btn btn-primary">Crear</button>
+		</div>
+	</div>
+</EditForm>
+
+<table class="table mt-3">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>EntradaCodigo</th>
+			<th>FechaHora</th>
+			<th>Estado</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (validaciones is null)
+		{
+			<tr><td colspan="5">Cargando...</td></tr>
+		}
+		else if (validaciones.Count == 0)
+		{
+			<tr><td colspan="5">No hay validaciones.</td></tr>
+		}
+		else
+		{
+			@foreach (var v in validaciones)
+			{
+				<tr>
+					<td>@v.Id</td>
+					<td>@v.EntradaCodigo</td>
+					<td>@v.FechaHora</td>
+					<td>@v.Estado</td>
+					<td>
+						<button class="btn btn-sm btn-danger" @onclick="() => Delete(v.Id)">Eliminar</button>
+					</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>
+
+@code {
+	private List<ControlAccesEvents.Blazor.DTOs.ValidacionDto>? validaciones;
+	private ControlAccesEvents.Blazor.DTOs.ValidacionDto newValidacion = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		validaciones = await ValidacionService.GetAllAsync();
+	}
+
+	private async Task Create()
+	{
+		var ok = await ValidacionService.CreateAsync(newValidacion);
+		if (ok)
+		{
+			newValidacion = new();
+			validaciones = await ValidacionService.GetAllAsync();
+		}
+	}
+
+	private async Task Delete(int id)
+	{
+		await ValidacionService.DeleteAsync(id);
+		validaciones = await ValidacionService.GetAllAsync();
+	}
+}

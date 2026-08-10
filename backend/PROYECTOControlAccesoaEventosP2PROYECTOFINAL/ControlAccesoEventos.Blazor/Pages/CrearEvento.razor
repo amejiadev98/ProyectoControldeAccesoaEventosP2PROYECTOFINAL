@@ -1,0 +1,57 @@
+@page "/eventos/crear"
+@inject ControlAccesoEventos.Blazor.Services.EventoService EventoService
+@inject NavigationManager NavigationManager
+
+<h3>Crear Evento</h3>
+
+<EditForm Model="evento" OnValidSubmit="HandleValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="mb-3">
+		<label class="form-label">Nombre</label>
+		<InputText class="form-control" @bind-Value="evento.Nombre" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Fecha</label>
+		<InputDate class="form-control" @bind-Value="evento.Fecha" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Lugar</label>
+		<InputText class="form-control" @bind-Value="evento.Lugar" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Capacidad</label>
+		<InputNumber class="form-control" @bind-Value="evento.Capacidad" />
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label">Descripcion</label>
+		<InputTextArea class="form-control" @bind-Value="evento.Descripcion" />
+	</div>
+
+	<button class="btn btn-primary" type="submit">Guardar</button>
+	<button class="btn btn-secondary ms-2" type="button" @onclick="Cancel">Cancelar</button>
+</EditForm>
+
+@code {
+	private EventoDto evento = new() { Fecha = DateTime.Now };
+
+	private async Task HandleValidSubmit()
+	{
+		var resp = await EventoService.CreateAsync(evento);
+		if (resp.IsSuccessStatusCode)
+		{
+			NavigationManager.NavigateTo("/eventos");
+		}
+		else
+		{
+			// TODO: show error
+		}
+	}
+
+	private void Cancel() => NavigationManager.NavigateTo("/eventos");
+}
