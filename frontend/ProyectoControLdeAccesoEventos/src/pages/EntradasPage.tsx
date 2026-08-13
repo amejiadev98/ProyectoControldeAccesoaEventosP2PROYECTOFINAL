@@ -129,7 +129,7 @@ const EntradasPage = () => {
           <p className="eyebrow">Entradas</p>
           <h1>Control de entradas</h1>
           <p className="page-description">
-            Gestiona las entradas emitidas y registra su estado con el backend.
+            Gestiona las entradas emitidas y registra su estado 
           </p>
         </div>
       </div>

@@ -123,7 +123,7 @@ const EventosPage = () => {
           <p className="eyebrow">Eventos</p>
           <h1>Gestión de eventos</h1>
           <p className="page-description">
-            Crea, edita y elimina eventos conectados directamente con tu API.
+            Crea, edita y elimina eventos 
           </p>
         </div>
       </div>

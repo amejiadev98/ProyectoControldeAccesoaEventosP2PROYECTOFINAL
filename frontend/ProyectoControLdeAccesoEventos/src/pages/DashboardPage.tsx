@@ -44,7 +44,7 @@ const DashboardPage = () => {
           <p className="eyebrow">Dashboard</p>
           <h1>Resumen en tiempo real</h1>
           <p className="page-description">
-            Totales de eventos, invitados y entradas conectados directamente con el backend.
+            Totales de eventos, invitados y entradas conectados directamente
           </p>
         </div>
       </div>

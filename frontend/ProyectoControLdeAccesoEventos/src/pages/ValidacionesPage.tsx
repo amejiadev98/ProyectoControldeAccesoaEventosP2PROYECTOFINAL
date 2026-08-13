@@ -123,7 +123,7 @@ const ValidacionesPage = () => {
           <p className="eyebrow">Validación</p>
           <h1>Registro de validaciones</h1>
           <p className="page-description">
-            Crea y administra validaciones de entrada usando la API real.
+            Crea y administra validaciones de entradas de invitados
           </p>
         </div>
       </div>

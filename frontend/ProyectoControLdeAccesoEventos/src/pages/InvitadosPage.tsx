@@ -113,7 +113,7 @@ const InvitadosPage = () => {
           <p className="eyebrow">Invitados</p>
           <h1>Administrar invitados</h1>
           <p className="page-description">
-            Registra invitados y actualiza sus datos directamente en el backend.
+            Registra invitados y actualiza sus datos 
           </p>
         </div>
       </div>
