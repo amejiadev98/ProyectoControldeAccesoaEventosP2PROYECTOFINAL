@@ -12,7 +12,7 @@ const Navbar = () => (
   <header className="navbar-shell">
     <div className="navbar-top">
       <div className="brand-center">
-        <span className="brand-title">CONTROL DE ACCESO</span>
+        <span className="brand-title">MEMORA WEDDINGS</span>
         <span className="brand-subtitle">Sistema de Gestión de Eventos</span>
       </div>
       <nav className="navbar-links" aria-label="Secciones del sitio">
